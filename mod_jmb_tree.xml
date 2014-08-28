@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.2" client="site" method="upgrade">
+	<name>mod_jmb_tree</name>
+	<author>SherZa and b2z (Dmitrijs Rekuns)</author>
+	<creationDate>July 2012</creationDate>
+	<copyright>(c) 2012 - 2014 NorrNext</copyright>
+	<license>GNU General Public License version 3 or later; see license.txt</license>
+	<authorEmail>support@norrnext.com</authorEmail>
+	<authorUrl>http://norrnext.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_JMB_TREE_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_jmb_tree">mod_jmb_tree.php</filename>
+		<folder>fields</folder>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+	</files>
+	<media destination="mod_jmb_tree" folder="media">
+		<folder>images</folder>
+	</media>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jmb_tree.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_jmb_tree.sys.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.mod_jmb_tree.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.mod_jmb_tree.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset 
+				name="basic"
+				addfieldpath="/modules/mod_jmb_tree/fields">
+
+				<field
+					name="type"
+					type="list"
+					default="category"
+					label="MOD_JMB_TREE_FIELD_TYPE_LABEL">
+					<option value="category">MOD_JMB_TREE_FIELD_TYPE_CATEGORY_OPTION</option>
+					<option value="menu">MOD_JMB_TREE_FIELD_TYPE_MENU_OPTION</option>
+				</field>
+
+				<field
+					name="layout"
+					type="modulelayout"
+					label="MOD_JMB_TREE_LAYOUT_LABEL"
+					description="MOD_JMB_TREE_LAYOUT_DESC"
+				/>
+
+				<field
+					name="category"
+					type="cattreeview"
+					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
+				/>
+
+				<field
+					name="menuitems"
+					type="menutreeview"
+					label="MOD_JMB_TREE_FIELDSET_MENUITEMS_LABEL"
+				/>
+
+				<field
+					name="firstitem"
+					type="text"
+					label="MOD_JMB_TREE_FIELD_FIRSTITEM_LABEL"
+					description="MOD_JMB_TREE_FIELD_FIRSTITEM_DESC"
+				/>
+
+				<field
+					name="endLevel"
+					type="list"
+					default="0"
+					label="MOD_JMB_TREE_FIELD_ENDLEVEL_LABEL"
+					description="MOD_JMB_TREE_FIELD_ENDLEVEL_DESC">
+					<option value="0">JALL</option>
+					<option value="1">J1</option>
+					<option value="2">J2</option>
+					<option value="3">J3</option>
+					<option value="4">J4</option>
+					<option value="5">J5</option>
+					<option value="6">J6</option>
+					<option value="7">J7</option>
+					<option value="8">J8</option>
+					<option value="9">J9</option>
+					<option value="10">J10</option>
+				</field>
+
+				<field
+					name="add_nofollow"
+					type="list"
+					default=""
+					label="MOD_JMB_TREE_FIELD_ADD_NOFOLLOW_LABEL"
+					description="MOD_JMB_TREE_FIELD_ADD_NOFOLLOW_DESC">
+					<option value="">JNO</option>
+					<option value="all">MOD_JMB_TREE_FIELD_ADD_NOFOLLOW_ALL</option>
+					<option value="internal">MOD_JMB_TREE_FIELD_ADD_NOFOLLOW_INTERNAL</option>
+					<option value="external">MOD_JMB_TREE_FIELD_ADD_NOFOLLOW_EXTERNAL</option>
+				</field>
+
+				<field
+					name="exclude_nofollow"
+					type="text"
+					label="MOD_JMB_TREE_FIELD_EXCLUDE_NOFOLLOW_LABEL"
+					description="MOD_JMB_TREE_FIELD_EXCLUDE_NOFOLLOW_DESC"
+				/>
+
+				<field
+					name="use_sep"
+					type="list"
+					default="1"
+					label="MOD_JMB_TREE_FIELD_USE_SEPARATOR_LABEL"
+					description="MOD_JMB_TREE_FIELD_USE_SEPARATOR_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="level_sep"
+					type="text"
+					size="1"
+					maxlength="1"
+					label="MOD_JMB_TREE_FIELD_LEVEL_SEPARATOR_LABEL"
+					description="MOD_JMB_TREE_FIELD_LEVEL_SEPARATOR_DESC"
+				/>
+
+				<field
+					name="menu_img"
+					type="list"
+					default="1"
+					label="MOD_JMB_TREE_FIELD_USE_MENU_IMAGES_LABEL"
+					description="MOD_JMB_TREE_FIELD_USE_MENU_IMAGES_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_backlink"
+					type="list"
+					default="1"
+					label="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_LABEL">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+			</fieldset>
+			<fieldset
+				name="advanced">
+
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+				/>
+
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+	<updateservers>
+		<server type="extension"
+				priority="1"
+				name="jmb_tree">http://joomlablog.ru/updates/jmb/modules/jmb_tree.xml
+		</server>
+	</updateservers>
+</extension>
