@@ -94,7 +94,7 @@ class JFormFieldmenuTreeview extends JFormField
 
 					$checkedElems = explode(',', $this->value[1]);
 
-					ob_start();
+					ob_start(); // эта строка ломает табы: Модуль | Описание | Привязка к пунктам меню ... 
 					?>
 
 					<div id="zmenu_treeboxbox_tree" class="treeboxbox_tree"></div>
