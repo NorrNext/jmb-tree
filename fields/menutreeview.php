@@ -22,7 +22,11 @@ class JFormFieldmenuTreeview extends JFormField
 	 * @var  string
 	 */
 	protected $type = 'menuTreeview';
-
+	
+	protected function getLabel() {
+		   return '';
+	} 
+	
 	/**
 	 * Method to get field input.
 	 *
@@ -84,6 +88,7 @@ class JFormFieldmenuTreeview extends JFormField
 		?>
 	<div style="clear:both"></div>
 	<div id="zmenu_treeboxbox_tree_wrapper">
+		<label><?php echo JText::_('MOD_JMB_TREE_FIELDSET_MENUITEMS_LABEL'); ?></label>
 		<table class='zmenu_items_table'>
 			<tr>
 				<td>
