@@ -22,7 +22,11 @@ class JFormFieldcatTreeview extends JFormField
 	 * @var  string
 	 */
 	protected $type = 'catTreeview';
-
+	
+	protected function getLabel() {
+		   return '';
+	}
+	
 	/**
 	 * Method to recurse the list of categories.
 	 *
@@ -109,7 +113,7 @@ class JFormFieldcatTreeview extends JFormField
 
 	<div style="clear:both"></div>
 	<div id="zcat_treeboxbox_tree_wrapper">
-
+		<label><?php echo JText::_('MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL'); ?></label>
 		<div id="zcat_treeboxbox_tree" class="treeboxbox_tree"></div>
 		<div id="zcatdhtmlxTree">
 			<?php self::getCatListRecurse($categories, $level, $checkedElems); ?>
