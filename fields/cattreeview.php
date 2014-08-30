@@ -72,23 +72,21 @@ class JFormFieldcatTreeview extends JFormField
 		$doc->addScriptDeclaration(
 			"window.addEvent('domready', function() {
 
+				var joomla_menu = jQuery('#zmenu_treeboxbox_tree'),
+					joomla_cat 	= jQuery('#zcat_treeboxbox_tree_wrapper');
 
-			if($('jform_params_type').value=='menu'){
-				$('zcat_treeboxbox_tree_wrapper').style.display='none';
-			}else{
-				$('zmenu_treeboxbox_tree_wrapper').style.display='none';
+				jQuery( '#jform_params_type' )
+				  .change(function () {
+					if(this.value=='menu'){
+						 joomla_menu.show();
+						 joomla_cat.hide();
+					}else{
+						 joomla_menu.hide();
+						 joomla_cat.show();
+					}
+				  })
+				  .change();
 			}
-
-			$('jform_params_type').addEvent('change', function(){
-				if(this.value=='menu'){
-					$('zmenu_treeboxbox_tree_wrapper').style.display='block';
-					$('zcat_treeboxbox_tree_wrapper').style.display='none';
-				}else{
-					$('zmenu_treeboxbox_tree_wrapper').style.display='none';
-					$('zcat_treeboxbox_tree_wrapper').style.display='block';
-				}
-			} ); 
-		} 
 		);");
 
 		jimport('joomla.application.categories');
