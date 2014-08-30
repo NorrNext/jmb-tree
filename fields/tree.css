@@ -16,6 +16,7 @@
 
 .containerTableStyle {
 	overflow : auto;
+	padding: 10px 0;
 }
 
 .standartTreeRow {
@@ -70,6 +71,7 @@ xmp {
 
 .treeboxbox_tree img, .treeboxbox_tree input {
 	margin : 0px;
+	max-width: 18px !important;
 }
 
 #jform_params_menuitems-lbl, #jform_params_category-lbl {
