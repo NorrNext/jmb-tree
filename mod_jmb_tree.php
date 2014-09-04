@@ -1,7 +1,7 @@
 <?php
 /**
- * @package    Norr_Tree
- * @author     Sherza & b2z <support@norrnext.com>
+ * @package    Jmb_Tree
+ * @author     Sherza & b2z (Dmitrijs Rekuns) <support@norrnext.com>
  * @copyright  Copyright (C) 2012 - 2014 NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
  */
@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 // Require helper.
 require_once __DIR__ . '/helper.php';
 
-$list = ModNorrTreeHelper::getList($params);
+$list = ModJmbTreeHelper::getList($params);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
 require JModuleHelper::getLayoutPath('mod_norr_tree', $params->get('layout', 'default'));

@@ -176,6 +176,7 @@ abstract class ModJmbTreeHelper
 
 						default:
 							$router = JSite::getRouter();
+
 							if ($router->getMode() == JROUTER_MODE_SEF)
 							{
 								$link->href = 'index.php?Itemid=' . $mlink->id;
@@ -291,7 +292,7 @@ abstract class ModJmbTreeHelper
 	 */
 	private static function getCategories($params)
 	{
-		include_once(JPATH_BASE . '/components/com_content/helpers/route.php');
+		include_once JPATH_BASE . '/components/com_content/helpers/route.php';
 
 		$cat = '';
 		$cats = JCategories::getInstance('content', array($cat));
