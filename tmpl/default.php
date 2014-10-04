@@ -1,12 +1,11 @@
 <?php
 /**
- * @package    Norr_Tree
+ * @package    Jmb_Tree
  * @author     Sherza & b2z <support@norrnext.com>
  * @copyright  Copyright (C) 2012 - 2014 NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
  */
 
-// no direct access
 defined('_JEXEC') or die;
 
 if (empty($list))
@@ -36,16 +35,22 @@ foreach ($list as $link)
 }
 
 $selVal = ($type == 'category') ? 'id' : 'Itemid';
-$selected = isset($link_id_href[JFactory::getApplication()->input->getInt($selVal)]) ? $link_id_href[JFactory::getApplication()->input->getInt($selVal)] : '';
+$selected = isset($link_id_href[JFactory::getApplication()->input->getInt($selVal)]) ?
+	$link_id_href[JFactory::getApplication()->input->getInt($selVal)] :
+	'';
 
-echo JHtml::_('select.genericlist', $menuOpts, 'norr_dropdown', 'class = "inputbox" onchange = "if(this.value) window.location.href=this.value"', 'value', 'text', $selected);
+echo JHtml::_(
+	'select.genericlist',
+	$menuOpts,
+	'norr_dropdown',
+	'class = "inputbox"
+	onchange = "if(this.value) window.location.href=this.value"',
+	'value',
+	'text'
+);
 
-if ($params->get('show_backlink', 1))
-{
-?>
-	<div style="text-align: right; margin-top:5px">
-		<a href="http://joomlablog.ru/rasshireniya-joomla/210-norr-tree" target="_blank" style="font-family: arial,helvetica,sans-serif; font-size: 7pt;text-decoration:none;color:#bfbfbf;"><?php echo JText::_('MOD_JMB_TREE_JOOMLABLOG_EXTENSIONS'); ?></a>
-	</div>
-<?php
-}
-?>
+if ($params->get('show_backlink', 1)) : ?>
+		<div style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 7pt; text-decoration: none">
+			<?php echo JText::_('MOD_JMB_TREE_BACKLINK'); ?>
+		</div>
+<?php endif; ?>

@@ -81,6 +81,8 @@ class JFormFieldmenuTreeview extends JFormField
 			'text',
 			$this->value[0]
 		);
+
+		ob_start();
 		?>
 		<div style="clear:both"></div>
 		<div id="zmenu_treeboxbox_tree_wrapper">
