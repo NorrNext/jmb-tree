@@ -34,7 +34,28 @@ class JFormFieldmenuTreeview extends JFormField
 		$doc->addScript(JURI::root() . 'modules/mod_jmb_tree/fields/tree.js');
 		$doc->addStyleSheet(JURI::root() . 'modules/mod_jmb_tree/fields/tree.css');
 
+		$doc->addScriptDeclaration(
+			"jQuery(document).ready(function () {
+
+				var joomla_menu = jQuery('#zmenu_treeboxbox_tree_wrapper'),
+				joomla_cat  = jQuery('#zcat_treeboxbox_tree_wrapper');
+
+				jQuery( '#jform_params_type' )
+				.change(function () {
+					if(this.value=='category'){
+						joomla_menu.hide();
+						joomla_cat.show();
+					}else{
+						joomla_menu.show();
+						joomla_cat.hide();
+					}
+				})
+				.change();
+			});"
+		);
+
 		require_once realpath(JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
+
 		$menuitems = MenusHelper::getMenuLinks();
 
 		$groups = array();
