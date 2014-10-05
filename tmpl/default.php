@@ -8,46 +8,59 @@
 
 defined('_JEXEC') or die;
 
-if (empty($list))
-{
-	return;
-}
+$selVal = ($params->get('type', 'menu') == 'category') ? 'id' : 'Itemid';
 
 $menuOpts = array();
 $link_id_href = array();
 
-$type = $params->get('type', 'category');
-$firstItem = $params->get('firstitem', '');
+echo '<ul class="menu menu_norr_list">';
 
-if (!empty($firstItem))
+foreach ($list as $k => $link)
 {
-	$menuOpts[] = JHtml::_('select.option', '', htmlspecialchars($firstItem));
-}
-else
-{
-	$menuOpts[] = JHtml::_('select.option', '', JText::_('MOD_JMB_TREE_SELECT_' . strtoupper($type)));
-}
+	// Note. It is important to remove spaces between elements.
+	$class = $link->anchor_css ? 'class="' . $link->anchor_css . '" ' : '';
+	$title = $link->anchor_title ? 'title="' . $link->anchor_title . '" ' : '';
 
-foreach ($list as $link)
-{
-	$menuOpts[] = JHtml::_('select.option', $link->href, $link->text, 'value', 'text', $disable = ($link->href ? false : true));
-	$link_id_href[$link->id] = $link->href;
+	if ($link->menu_image && $params->get('menu_img', 1))
+	{
+		$link->params->get('menu_text', 1) ?
+		$linktype = '<img src="' . $link->menu_image . '" alt="' . $link->text . '" /><span class="image-title">' . $link->text . '</span> ' :
+		$linktype = '<img src="' . $link->menu_image . '" alt="' . $link->text . '" />';
+	}
+	else
+	{
+		$linktype = $link->text;
+	}
+
+	if (isset($list[$k - 1]->level) && ($link->level > $list[$k - 1]->level))
+	{
+		echo '<ul>';
+	}
+
+	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active ' : '';
+	echo '<li class="norr_level_' . $link->level . ' ' . $active . '">';
+
+	switch ($link->browserNav)
+	{
+		default:
+		case 0:
+			?>
+			<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollowInternal; ?>><?php echo $link->levelSeparator . $linktype; ?></a>
+			<?php
+			break;
+
+		case 1:
+			?>
+			<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollowExternal; ?>><?php echo $link->levelSeparator . $linktype; ?></a>
+			<?php
+			break;
+	}
+
+	if (isset($list[$k + 1]->level) && ($link->level >= $list[$k + 1]->level))
+	{
+		echo str_repeat('</li></ul>', ($link->level - $list[$k + 1]->level)) . '</li>';
+	}
 }
-
-$selVal = ($type == 'category') ? 'id' : 'Itemid';
-$selected = isset($link_id_href[JFactory::getApplication()->input->getInt($selVal)]) ?
-	$link_id_href[JFactory::getApplication()->input->getInt($selVal)] :
-	'';
-
-echo JHtml::_(
-	'select.genericlist',
-	$menuOpts,
-	'norr_dropdown',
-	'class = "inputbox"
-	onchange = "if(this.value) window.location.href=this.value"',
-	'value',
-	'text'
-);
 
 if ($params->get('show_backlink', 1)) : ?>
 		<div style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 7pt; text-decoration: none">

@@ -28,7 +28,7 @@
 				<field
 					name="type"
 					type="list"
-					default="category"
+					default="menu"
 					label="MOD_JMB_TREE_FIELD_TYPE_LABEL">
 					<option value="category">MOD_JMB_TREE_FIELD_TYPE_CATEGORY_OPTION</option>
 					<option value="menu">MOD_JMB_TREE_FIELD_TYPE_MENU_OPTION</option>
@@ -42,15 +42,15 @@
 				/>
 
 				<field
-					name="category"
-					type="cattreeview"
-					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
-				/>
-
-				<field
 					name="menuitems"
 					type="menutreeview"
 					label="MOD_JMB_TREE_FIELDSET_MENUITEMS_LABEL"
+				/>
+
+				<field
+					name="category"
+					type="cattreeview"
+					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
 				/>
 
 				<field
