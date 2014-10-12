@@ -100,12 +100,13 @@
 
 				<field
 					name="use_sep"
-					type="list"
+					type="radio"
+					class="btn-group btn-group-yesno"
 					default="1"
 					label="MOD_JMB_TREE_FIELD_USE_SEPARATOR_LABEL"
 					description="MOD_JMB_TREE_FIELD_USE_SEPARATOR_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 				<field
@@ -119,12 +120,13 @@
 
 				<field
 					name="menu_img"
-					type="list"
+					type="radio"
+					class="btn-group btn-group-yesno"
 					default="1"
 					label="MOD_JMB_TREE_FIELD_USE_MENU_IMAGES_LABEL"
 					description="MOD_JMB_TREE_FIELD_USE_MENU_IMAGES_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 			</fieldset>
@@ -133,12 +135,13 @@
 
 				<field
 					name="show_backlink"
-					type="list"
+					type="radio"
+					class="btn-group btn-group-yesno"
 					default="1"
 					label="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_LABEL"
 					description="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 				<field
