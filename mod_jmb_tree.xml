@@ -28,7 +28,7 @@
 				<field
 					name="type"
 					type="list"
-					default="category"
+					default="menu"
 					label="MOD_JMB_TREE_FIELD_TYPE_LABEL">
 					<option value="category">MOD_JMB_TREE_FIELD_TYPE_CATEGORY_OPTION</option>
 					<option value="menu">MOD_JMB_TREE_FIELD_TYPE_MENU_OPTION</option>
@@ -42,15 +42,15 @@
 				/>
 
 				<field
-					name="category"
-					type="cattreeview"
-					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
-				/>
-
-				<field
 					name="menuitems"
 					type="menutreeview"
 					label="MOD_JMB_TREE_FIELDSET_MENUITEMS_LABEL"
+				/>
+
+				<field
+					name="category"
+					type="cattreeview"
+					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
 				/>
 
 				<field
@@ -127,18 +127,19 @@
 					<option value="1">JYES</option>
 				</field>
 
+			</fieldset>
+			<fieldset
+				name="advanced">
+
 				<field
 					name="show_backlink"
 					type="list"
 					default="1"
-					label="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_LABEL">
+					label="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_LABEL"
+					description="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
-			</fieldset>
-			<fieldset
-				name="advanced">
 
 				<field
 					name="moduleclass_sfx"
@@ -164,6 +165,17 @@
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
 					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
 				/>
+			</fieldset>
+
+			<fieldset name="jmb_tree_description"
+				addfieldpath="/modules/mod_jmb_tree/fields">
+
+				<field
+					name="description"
+					type="jmb.description"
+					label=""
+				/>
+
 			</fieldset>
 		</fields>
 	</config>
