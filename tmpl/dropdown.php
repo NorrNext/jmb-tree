@@ -50,7 +50,7 @@ echo JHtml::_(
 );
 
 if ($params->get('show_backlink', 1)) : ?>
-		<div style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 7pt; text-decoration: none">
-			<?php echo JText::_('MOD_JMB_TREE_BACKLINK'); ?>
-		</div>
+	<div style="text-align: left; clear: both; font-family: Arial, Helvetica, sans-serif; font-size: 7pt; text-decoration: none">
+		<?php echo JText::_('MOD_JMB_TREE_BACKLINK'); ?>
+	</div>
 <?php endif; ?>
