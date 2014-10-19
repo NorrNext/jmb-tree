@@ -60,6 +60,11 @@ foreach ($list as $k => $link)
 	{
 		echo str_repeat('</li></ul>', ($link->level - $list[$k + 1]->level)) . '</li>';
 	}
+
+	if (!isset($list[$k + 1]->level))
+	{
+		echo str_repeat('</li></ul>', $link->level);
+	}
 }
 
 if ($params->get('show_backlink', 1)) : ?>
