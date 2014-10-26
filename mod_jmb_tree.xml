@@ -185,7 +185,7 @@
 	<updateservers>
 		<server type="extension"
 				priority="1"
-				name="jmb_tree">http://norrnext.com/updates/joomla/modules/jmb_tree.xml
+				name="NorrNext updates server">http://norrnext.com/updates/joomla/modules/jmb_tree_update.xml
 		</server>
 	</updateservers>
 </extension>
