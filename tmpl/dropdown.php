@@ -14,7 +14,7 @@ if (empty($list))
 }
 
 $menuOpts = array();
-$link_id_href = array();
+$linkIdHref = array();
 
 $type = $params->get('type', 'menu');
 $firstItem = $params->get('firstitem', '');
@@ -31,12 +31,12 @@ else
 foreach ($list as $link)
 {
 	$menuOpts[] = JHtml::_('select.option', $link->href, $link->text, 'value', 'text', $disable = ($link->href ? false : true));
-	$link_id_href[$link->id] = $link->href;
+	$linkIdHref[$link->id] = $link->href;
 }
 
 $selVal = ($type == 'category') ? 'id' : 'Itemid';
-$selected = isset($link_id_href[JFactory::getApplication()->input->getInt($selVal)]) ?
-	$link_id_href[JFactory::getApplication()->input->getInt($selVal)] :
+$selected = isset($linkIdHref[JFactory::getApplication()->input->getInt($selVal)]) ?
+	$linkIdHref[JFactory::getApplication()->input->getInt($selVal)] :
 	'';
 
 echo JHtml::_(
@@ -46,7 +46,8 @@ echo JHtml::_(
 	'class = "inputbox"
 	onchange = "if(this.value) window.location.href=this.value"',
 	'value',
-	'text'
+	'text',
+	$selected
 );
 
 if ($params->get('show_backlink', 1)) : ?>

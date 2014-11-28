@@ -208,7 +208,7 @@ abstract class ModJmbTreeHelper
 					}
 					else
 					{
-						$link->href = JRoute::_($link->href);
+						$link->href = JRoute::_($link->href, false);
 					}
 
 					$excludedParentsCount = 0;
@@ -239,7 +239,6 @@ abstract class ModJmbTreeHelper
 						: '';
 					$link->params		= $mlink->params;
 					$link->browserNav	= $mlink->browserNav;
-					$link->href			= JFilterOutput::ampReplace(htmlspecialchars($link->href));
 
 					// Nofollow.
 					$addNofollow = $params->get('add_nofollow', '');
@@ -399,7 +398,7 @@ abstract class ModJmbTreeHelper
 					{
 						$link = new stdClass;
 						$link->id = $cat->id;
-						$link->href = JRoute::_(ContentHelperRoute::getCategoryRoute($cat->id));
+						$link->href = JRoute::_(ContentHelperRoute::getCategoryRoute($cat->id), false);
 
 						if ($level > 1)
 						{
