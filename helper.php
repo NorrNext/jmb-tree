@@ -102,6 +102,20 @@ abstract class ModJmbTreeHelper
 		$curMenuLevel = 0;
 		$childrenOfCurMenu = false;
 
+		// Level separator
+		$separator = '';
+		$levelSeparator = '';
+
+		if ($params->get('use_sep', 1))
+		{
+			$levelSeparator = $params->get('level_sep', '');
+
+			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
+			{
+				$levelSeparator = '&nbsp;';
+			}
+		}
+
 		foreach ($items as $k => $mlink)
 		{
 			if (self::$childrenonly)
@@ -212,25 +226,12 @@ abstract class ModJmbTreeHelper
 
 					$link->level = ($mlink->level - $excludedParentsCount - $curMenuLevel);
 
-					// Level separator.
-					$link->levelSeparator = '';
-
-					if ($params->get('use_sep', 1))
+					if ($link->level > 1)
 					{
-						$levelSeparator = $params->get('level_sep', '');
-
-						if (strlen($levelSeparator) > 1 || empty($levelSeparator))
-						{
-							$levelSeparator = '&nbsp;';
-						}
-
-						if ($link->level > 1)
-						{
-							$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
-						}
+						$separator = str_repeat($levelSeparator . ' ', $link->level - 1);
 					}
 
-					$link->text			= htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
+					$link->text			= $separator . htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
 					$link->anchor_css	= htmlspecialchars($mlink->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
 					$link->anchor_title = htmlspecialchars($mlink->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
 					$link->menu_image	= $mlink->params->get('menu_image', '')
@@ -336,7 +337,7 @@ abstract class ModJmbTreeHelper
 			}
 		}
 
-		self::getCatListRecurse($categories, $level, $checkedElems, $links, $excludedCats);
+		self::getCatListRecurse($categories, $level, $checkedElems, $links, $excludedCats, $params);
 
 		return $links;
 	}
@@ -349,15 +350,30 @@ abstract class ModJmbTreeHelper
 	 * @param   array    $checkedElems        Checked elements.
 	 * @param   array    &$links              Links.
 	 * @param   array    $excludedCats        Excluded categories.
+	 * @param   array    $params              Additional parameters.
 	 * @param   boolean  $childrenOfSelected  Children categories of selected one.
 	 *
 	 * @return  void
 	 */
-	private static function getCatListRecurse($categories, &$level, $checkedElems, &$links, $excludedCats, $childrenOfSelected = false)
+	private static function getCatListRecurse($categories, &$level, $checkedElems, &$links, $excludedCats, $params, $childrenOfSelected = false)
 	{
 		$childrenOfSelectedTop = $childrenOfSelected;
 
 		$level++;
+
+		// Level separator
+		$separator = '';
+		$levelSeparator = '';
+
+		if ($params->get('use_sep', 1))
+		{
+			$levelSeparator = $params->get('level_sep', '');
+
+			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
+			{
+				$levelSeparator = '&nbsp;';
+			}
+		}
 
 		foreach ($categories as $cat)
 		{
@@ -384,7 +400,13 @@ abstract class ModJmbTreeHelper
 						$link = new stdClass;
 						$link->id = $cat->id;
 						$link->href = JRoute::_(ContentHelperRoute::getCategoryRoute($cat->id));
-						$link->text = str_repeat('- ', $level) . $cat->title;
+
+						if ($level > 1)
+						{
+							$separator = str_repeat($levelSeparator . ' ', $level - 1);
+						}
+
+						$link->text = $separator . $cat->title;
 						$link->textNoDef = $cat->title;
 						$link->level = $level;
 						$links[] = $link;
@@ -403,7 +425,7 @@ abstract class ModJmbTreeHelper
 					$level--;
 				}
 
-				self::getCatListRecurse($childrenCategories, $level, $checkedElems, $links, $excludedCats, $childrenOfSelected);
+				self::getCatListRecurse($childrenCategories, $level, $checkedElems, $links, $excludedCats, $params, $childrenOfSelected);
 
 				if ($excluded)
 				{
