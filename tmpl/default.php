@@ -8,28 +8,31 @@
 
 defined('_JEXEC') or die;
 
-$selVal = ($params->get('type', 'menu') == 'category') ? 'id' : 'Itemid';
-
-$menuOpts = array();
-$link_id_href = array();
+$menuOpts   = array();
+$linkIdHref = array();
+$type       = $params->get('type', 'menu');
+$selVal     = ($type == 'menu') ? 'Itemid' : 'id';
 
 echo '<ul class="menu menu_norr_list">';
 
 foreach ($list as $k => $link)
 {
-	// Note. It is important to remove spaces between elements.
-	$class = $link->anchor_css ? 'class="' . $link->anchor_css . '" ' : '';
-	$title = $link->anchor_title ? 'title="' . $link->anchor_title . '" ' : '';
+	if ($type == 'menu')
+	{
+		// Note. It is important to remove spaces between elements.
+		$class = $link->anchor_css ? 'class="' . $link->anchor_css . '" ' : '';
+		$title = $link->anchor_title ? 'title="' . $link->anchor_title . '" ' : '';
 
-	if ($link->menu_image && $params->get('menu_img', 1))
-	{
-		$link->params->get('menu_text', 1) ?
-		$linktype = '<img src="' . $link->menu_image . '" alt="' . $link->text . '" /><span class="image-title">' . $link->text . '</span> ' :
-		$linktype = '<img src="' . $link->menu_image . '" alt="' . $link->text . '" />';
-	}
-	else
-	{
-		$linktype = $link->text;
+		if ($link->menu_image && $params->get('menu_img', 1))
+		{
+			$link->params->get('menu_text', 1) ?
+				$linktype = '<img src="' . $link->menu_image . '" alt="' . $link->text . '" /><span class="image-title">' . $link->text . '</span> ' :
+				$linktype = '<img src="' . $link->menu_image . '" alt="' . $link->text . '" />';
+		}
+		else
+		{
+			$linktype = $link->text;
+		}
 	}
 
 	if (isset($list[$k - 1]->level) && ($link->level > $list[$k - 1]->level))
@@ -40,20 +43,27 @@ foreach ($list as $k => $link)
 	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active ' : '';
 	echo '<li class="norr_level_' . $link->level . ' ' . $active . '">';
 
-	switch ($link->browserNav)
+	if ($type == 'menu')
 	{
-		default:
-		case 0:
-			?>
-			<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollowInternal; ?>><?php echo $link->levelSeparator . $linktype; ?></a>
-			<?php
-			break;
+		switch ($link->browserNav)
+		{
+			default:
+			case 0:
+				?>
+				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollowInternal; ?>><?php echo $linktype; ?></a>
+				<?php
+				break;
 
-		case 1:
-			?>
-			<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollowExternal; ?>><?php echo $link->levelSeparator . $linktype; ?></a>
-			<?php
-			break;
+			case 1:
+				?>
+				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollowExternal; ?>><?php echo $linktype; ?></a>
+				<?php
+				break;
+		}
+	}
+	else
+	{
+		echo $link->levelSeparator . '<a href="' . $link->href . '">' . $link->text . '</a>';
 	}
 
 	if (isset($list[$k + 1]->level) && ($link->level >= $list[$k + 1]->level))

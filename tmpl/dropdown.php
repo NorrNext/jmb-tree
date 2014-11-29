@@ -30,7 +30,7 @@ else
 
 foreach ($list as $link)
 {
-	$menuOpts[] = JHtml::_('select.option', $link->href, $link->text, 'value', 'text', $disable = ($link->href ? false : true));
+	$menuOpts[] = JHtml::_('select.option', $link->href, $link->levelSeparator . $link->text, 'value', 'text', $disable = ($link->href ? false : true));
 	$linkIdHref[$link->id] = $link->href;
 }
 

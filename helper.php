@@ -103,13 +103,10 @@ abstract class ModJmbTreeHelper
 		$childrenOfCurMenu = false;
 
 		// Level separator
-		$separator = '';
-		$levelSeparator = '';
+		$levelSeparator = $params->get('level_sep', '');
 
 		if ($params->get('use_sep', 1))
 		{
-			$levelSeparator = $params->get('level_sep', '');
-
 			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
 			{
 				$levelSeparator = '&nbsp;';
@@ -226,12 +223,14 @@ abstract class ModJmbTreeHelper
 
 					$link->level = ($mlink->level - $excludedParentsCount - $curMenuLevel);
 
+					$link->levelSeparator = '';
+
 					if ($link->level > 1)
 					{
-						$separator = str_repeat($levelSeparator . ' ', $link->level - 1);
+						$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
 					}
 
-					$link->text			= $separator . htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
+					$link->text			= htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
 					$link->anchor_css	= htmlspecialchars($mlink->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
 					$link->anchor_title = htmlspecialchars($mlink->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
 					$link->menu_image	= $mlink->params->get('menu_image', '')
@@ -240,8 +239,8 @@ abstract class ModJmbTreeHelper
 					$link->params		= $mlink->params;
 					$link->browserNav	= $mlink->browserNav;
 
-					// Nofollow.
-					$addNofollow = $params->get('add_nofollow', '');
+					// Nofollow
+					$addNofollow     = $params->get('add_nofollow', '');
 					$nofollowExclude = $params->get('exclude_nofollow', '');
 					$nofollowExclude = explode(',', $nofollowExclude);
 
@@ -361,13 +360,10 @@ abstract class ModJmbTreeHelper
 		$level++;
 
 		// Level separator
-		$separator = '';
-		$levelSeparator = '';
+		$levelSeparator = $params->get('level_sep', '');
 
 		if ($params->get('use_sep', 1))
 		{
-			$levelSeparator = $params->get('level_sep', '');
-
 			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
 			{
 				$levelSeparator = '&nbsp;';
@@ -400,12 +396,14 @@ abstract class ModJmbTreeHelper
 						$link->id = $cat->id;
 						$link->href = JRoute::_(ContentHelperRoute::getCategoryRoute($cat->id), false);
 
+						$link->levelSeparator = '';
+
 						if ($level > 1)
 						{
-							$separator = str_repeat($levelSeparator . ' ', $level - 1);
+							$link->levelSeparator = str_repeat($levelSeparator . ' ', $level - 1);
 						}
 
-						$link->text = $separator . $cat->title;
+						$link->text = $cat->title;
 						$link->textNoDef = $cat->title;
 						$link->level = $level;
 						$links[] = $link;
