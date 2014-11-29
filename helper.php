@@ -166,6 +166,9 @@ abstract class ModJmbTreeHelper
 					$link->id = $mlink->id;
 					$link->href = $mlink->link;
 
+					$internal = false;
+					$external = false;
+
 					switch ($mlink->type)
 					{
 						case 'separator':
@@ -177,6 +180,11 @@ abstract class ModJmbTreeHelper
 							{
 								// If this is an internal Joomla link, ensure the Itemid is set.
 								$link->href = $mlink->link . '&Itemid=' . $mlink->id;
+								$internal   = true;
+							}
+							else
+							{
+								$external = true;
 							}
 							break;
 
@@ -195,6 +203,7 @@ abstract class ModJmbTreeHelper
 							else
 							{
 								$link->href .= '&Itemid=' . $mlink->id;
+								$internal = true;
 							}
 							break;
 					}
@@ -230,6 +239,39 @@ abstract class ModJmbTreeHelper
 						$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
 					}
 
+					// Nofollow
+					$addNofollow     = $params->get('add_nofollow', '');
+					$nofollowExclude = explode(',', $params->get('exclude_nofollow', ''));
+					$link->nofollowInternal = '';
+					$link->nofollowExternal = '';
+					$link->nofollow = '';
+
+					switch ($addNofollow)
+					{
+						case 'all':
+							$link->nofollow = 'rel="nofollow"';
+							break;
+
+						case 'internal':
+							if ($internal)
+							{
+								$link->nofollow = 'rel="nofollow"';
+							}
+							break;
+
+						case 'external':
+							if ($external)
+							{
+								$link->nofollow = 'rel="nofollow"';
+							}
+							break;
+					}
+
+					if (in_array($link->id, $nofollowExclude))
+					{
+						$link->nofollow = '';
+					}
+
 					$link->text			= htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
 					$link->anchor_css	= htmlspecialchars($mlink->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
 					$link->anchor_title = htmlspecialchars($mlink->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
@@ -238,36 +280,6 @@ abstract class ModJmbTreeHelper
 						: '';
 					$link->params		= $mlink->params;
 					$link->browserNav	= $mlink->browserNav;
-
-					// Nofollow
-					$addNofollow     = $params->get('add_nofollow', '');
-					$nofollowExclude = $params->get('exclude_nofollow', '');
-					$nofollowExclude = explode(',', $nofollowExclude);
-
-					switch ($addNofollow)
-					{
-						case 'all':
-							$link->nofollowInternal = 'rel="nofollow"';
-							$link->nofollowExternal = 'rel="nofollow"';
-							break;
-						case 'internal':
-							$link->nofollowInternal = 'rel="nofollow"';
-							$link->nofollowExternal = '';
-							break;
-						case 'external':
-							$link->nofollowInternal = '';
-							$link->nofollowExternal = 'rel="nofollow"';
-							break;
-						default:
-							$link->nofollowInternal = '';
-							$link->nofollowExternal = '';
-					}
-
-					if (in_array($link->id, $nofollowExclude))
-					{
-						$link->nofollowInternal = '';
-						$link->nofollowExternal = '';
-					}
 
 					$links[] = $link;
 				}

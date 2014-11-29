@@ -50,13 +50,14 @@ foreach ($list as $k => $link)
 			default:
 			case 0:
 				?>
-				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollowInternal; ?>><?php echo $linktype; ?></a>
+				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
 				<?php
 				break;
 
 			case 1:
+			case 2:
 				?>
-				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollowExternal; ?>><?php echo $linktype; ?></a>
+				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
 				<?php
 				break;
 		}
