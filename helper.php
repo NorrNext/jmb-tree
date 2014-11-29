@@ -194,7 +194,7 @@ abstract class ModJmbTreeHelper
 							break;
 
 						default:
-							$router = JSite::getRouter();
+							$router = JFactory::getApplication()->getRouter();
 
 							if ($router->getMode() == JROUTER_MODE_SEF)
 							{
@@ -242,9 +242,7 @@ abstract class ModJmbTreeHelper
 					// Nofollow
 					$addNofollow     = $params->get('add_nofollow', '');
 					$nofollowExclude = explode(',', $params->get('exclude_nofollow', ''));
-					$link->nofollowInternal = '';
-					$link->nofollowExternal = '';
-					$link->nofollow = '';
+					$link->nofollow  = '';
 
 					switch ($addNofollow)
 					{
