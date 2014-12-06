@@ -13,7 +13,8 @@ $linkIdHref = array();
 $type       = $params->get('type', 'menu');
 $selVal     = ($type == 'menu') ? 'Itemid' : 'id';
 
-echo '<ul class="menu menu_norr_list">';
+
+echo '<nav role="navigation" class="jmb-tree"><ul role="menubar" class="menu">';
 
 foreach ($list as $k => $link)
 {
@@ -34,14 +35,35 @@ foreach ($list as $k => $link)
 			$linktype = $link->text;
 		}
 	}
-
-	if (isset($list[$k - 1]->level) && ($link->level > $list[$k - 1]->level))
+	// Last item class
+	if (!isset($list[$k+1]->level))
 	{
-		echo '<ul>';
+		$lastItem =" jmb-tree-last-item";
+	}else{
+		$lastItem ="";
 	}
 
-	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active ' : '';
-	echo '<li class="norr_level_' . $link->level . ' ' . $active . '">';
+	// Dropdown item class
+	if($link->level >= $list[$k + 1]->level){
+		$dropdown ="";
+		$area = 'role="menuitem"';
+	}	
+	else{
+		$dropdown =" jmb-tree-dropdown";
+		$area = 'role="menuitem" tabindex="0" aria-haspopup="true"';
+	}
+
+	if (isset($list[$k - 1]->level) && ($link->level > $list[$k - 1]->level))
+	{	
+		echo '<div class="jmb-tree-dropdown-menu"><ul role="menu" aria-hidden="true">';
+	}
+	if(isset($list[$k - 1]->level) && ($link->level >= 2)){
+		$area = 'role="menuitem" tabindex="-1"';
+	}
+
+	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active' : '';
+	
+	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $lastItem .'' . $dropdown .'' . $active . '">';
 
 	if ($type == 'menu')
 	{
@@ -69,12 +91,12 @@ foreach ($list as $k => $link)
 
 	if (isset($list[$k + 1]->level) && ($link->level >= $list[$k + 1]->level))
 	{
-		echo str_repeat('</li></ul>', ($link->level - $list[$k + 1]->level)) . '</li>';
+		echo str_repeat('</li></ul></div>', ($link->level - $list[$k + 1]->level)) . '</li>';
 	}
 
 	if (!isset($list[$k + 1]->level))
 	{
-		echo str_repeat('</li></ul>', $link->level);
+		echo str_repeat('</li></ul></nav>', $link->level);
 	}
 }
 
