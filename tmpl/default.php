@@ -39,13 +39,6 @@ foreach ($list as $k => $link)
 			$linktype = $link->text;
 		}
 	}
-	// Last item class
-	if (!isset($list[$k+1]->level))
-	{
-		$lastItem =" jmb-tree-last-item";
-	}else{
-		$lastItem ="";
-	}
 
 	// Dropdown item class
 	if($link->level >= $list[$k + 1]->level){
@@ -64,10 +57,20 @@ foreach ($list as $k => $link)
 	if(isset($list[$k - 1]->level) && ($link->level >= 2)){
 		$area = 'role="menuitem" tabindex="-1"';
 	}
+	
+	// Parent item active class
+	$jMenu = JFactory::getApplication()->getMenu();
+	$parentLevel1 	= $jMenu->getItem( $jMenu->getActive()->parent_id );
+	$parentLevel2	= $jMenu->getItem( $parentLevel1->parent_id );
+	if($parentLevel1->id == $link->id || $parentLevel2->id == $link->id){
+		$activePerent = ' active';
+	}else{
+		$activePerent = '';
+	}
 
 	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active' : '';
 	
-	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $lastItem .'' . $dropdown .'' . $active . '">';
+	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $lastItem .'' . $dropdown .'' . $active . ''.$activePerent.'">';
 
 	if ($type == 'menu')
 	{

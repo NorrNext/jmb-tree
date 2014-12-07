@@ -158,7 +158,7 @@
 }
 
 .jmb-tree.jmb-tree-default ul ul li:hover,
-.jmb-tree.jmb-tree-default ul ul li.active a {
+.jmb-tree.jmb-tree-default ul ul li.active > a {
     background: #F7F7F7;
     color: #444;
 	box-shadow: none;	
@@ -184,7 +184,7 @@
 
 @media only screen and (max-width: 767px) {
 
-    .jmb-tree {
+    .jmb-tree.jmb-tree-default {
         background: none;
     }
 
@@ -197,7 +197,7 @@
         background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(240,240,240,1) 100%);
         background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(240,240,240,1) 100%);
         background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(240,240,240,1) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#f0f0f0',GradientType=0 );
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#f0f0f0',GradientType=0 ); 
     }
 
     .jmb-tree.jmb-tree-default > ul > li:hover > a {
@@ -210,6 +210,28 @@
         background: #eee;
         box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.05);
     }
+    .jmb-tree.jmb-tree-default ul ul li a:before,
+    .jmb-tree.jmb-tree-default ul ul ul li a:before{
+		width: 6px;  
+		height: 6px;
+		display: inline-block;   
+		margin-right: 10px;  content: '';    
+		background: #FFFFFF;
+		vertical-align: middle;
+		border-radius: 100%;
+		border: 1px solid #ccc;
+	}
+    .jmb-tree.jmb-tree-default ul ul ul li a:before{
+		margin-left: 20px;
+		border-radius: 0;
+	}	
+	.jmb-tree.jmb-tree-default ul ul li:hover, 
+	.jmb-tree.jmb-tree-default ul ul li.active > a{
+	   background: #eee;
+        
+	    
+	   box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.05);
+	}
 
     .jmb-tree.jmb-tree-default ul li a, .jmb-tree.jmb-tree-default ul ul li a {
         line-height: 35px;
@@ -239,10 +261,6 @@
     .jmb-tree.jmb-tree-default ul li a {
         border-bottom: 1px solid #dcdcdc;
         display: block;
-    }
-
-    .jmb-tree.jmb-tree-default ul li.jmb-tree-level1.jmb-tree-last-item a {
-        border-bottom: none;
     }
 
     .jmb-tree.jmb-tree-default ul ul, .jmb-tree.jmb-tree-default ul ul li, .jmb-tree.jmb-tree-default ul ul li a {
