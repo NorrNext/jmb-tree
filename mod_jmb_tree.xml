@@ -18,6 +18,7 @@
 	</files>
 	<media destination="mod_jmb_tree" folder="media">
 		<folder>default</folder>
+		<folder>dark</folder>
 	</media>
 	<config>
 		<fields name="params">
