@@ -157,7 +157,7 @@
 }
 
 .jmb-tree.jmb-tree-dark ul ul li:hover,
-.jmb-tree.jmb-tree-default ul ul li.active a  {
+.jmb-tree.jmb-tree-dark ul ul li.active a  {
     background: #474A4F;
     color: #444;
 	box-shadow: none;
