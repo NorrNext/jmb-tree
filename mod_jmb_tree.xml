@@ -25,6 +25,7 @@
 			<fieldset 
 				name="basic"
 				addfieldpath="/modules/mod_jmb_tree/fields">
+				
 				<field
 					name="include_css"
 					type="radio"
@@ -35,6 +36,7 @@
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
+				
 				<field
 					name="type"
 					type="list"
