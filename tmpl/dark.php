@@ -60,9 +60,9 @@ foreach ($list as $k => $link)
 	
 	// Parent item active class
 	$jMenu = JFactory::getApplication()->getMenu();
-	$parentLevel1 	= $jMenu->getItem( $jMenu->getActive()->parent_id );
-	$parentLevel2	= !empty($parentLevel1) ? $jMenu->getItem( $parentLevel1->parent_id ) : false;
-	if($parentLevel1->id == $link->id || $parentLevel2->id == $link->id){
+	$parentLevel1 	= !empty($jMenu->getItem( $jMenu->getActive()->parent_id )->id) ? $jMenu->getItem( $jMenu->getActive()->parent_id )->id : false;
+	$parentLevel2	= !empty($jMenu->getItem( $jMenu->getActive()->parent_id )) ? $jMenu->getItem( $jMenu->getItem( $jMenu->getActive()->parent_id )->parent_id )->id : false;
+	if($parentLevel1 == $link->id || $parentLevel2 == $link->id){
 		$activePerent = ' active';
 	}else{
 		$activePerent = '';
