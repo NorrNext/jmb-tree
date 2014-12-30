@@ -41,7 +41,8 @@ foreach ($list as $k => $link)
 	}
 
 	// Dropdown item class
-	if($link->level >= $list[$k + 1]->level){
+	$checkmenuitemlevel = !empty($list[$k + 1]->level) ? $list[$k + 1]->level : false;
+	if($link->level >= $checkmenuitemlevel){
 		$dropdown ="";
 		$area = 'role="menuitem"';
 	}	
@@ -60,9 +61,13 @@ foreach ($list as $k => $link)
 	
 	// Parent item active class
 	$jMenu = JFactory::getApplication()->getMenu();
-	$parentLevel1 	= !empty($jMenu->getItem( $jMenu->getActive()->parent_id )->id) ? $jMenu->getItem( $jMenu->getActive()->parent_id )->id : false;
-	$parentLevel2	= !empty($jMenu->getItem( $jMenu->getActive()->parent_id )) ? $jMenu->getItem( $jMenu->getItem( $jMenu->getActive()->parent_id )->parent_id )->id : false;
-	if($parentLevel1 == $link->id || $parentLevel2 == $link->id){
+	
+	$parentId 			= $jMenu->getActive()->parent_id;
+	$parentItem 		= $jMenu->getItem($parentId);
+	$parentItemId		= !empty($parentItem->id) ? $parentItem->id : false ;
+	$parrentItemId2		= !empty($parentItem->parent_id) ? $parentItem->parent_id : false;
+
+	if($parentItemId == $link->id || $parrentItemId2 == $link->id){
 		$activePerent = ' active';
 	}else{
 		$activePerent = '';
