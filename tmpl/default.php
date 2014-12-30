@@ -61,7 +61,7 @@ foreach ($list as $k => $link)
 	// Parent item active class
 	$jMenu = JFactory::getApplication()->getMenu();
 	$parentLevel1 	= $jMenu->getItem( $jMenu->getActive()->parent_id );
-	$parentLevel2	= $jMenu->getItem( $parentLevel1->parent_id );
+	$parentLevel2	= !empty($parentLevel1) ? $jMenu->getItem( $parentLevel1->parent_id ) : false;
 	if($parentLevel1->id == $link->id || $parentLevel2->id == $link->id){
 		$activePerent = ' active';
 	}else{
@@ -70,7 +70,7 @@ foreach ($list as $k => $link)
 
 	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active' : '';
 	
-	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $lastItem .'' . $dropdown .'' . $active . ''.$activePerent.'">';
+	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $dropdown .'' . $active . ''.$activePerent.'">';
 
 	if ($type == 'menu')
 	{
