@@ -84,21 +84,21 @@ foreach ($list as $k => $link)
 			default:
 			case 0:
 				?>
-				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
+				<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?><?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
 				<?php
 				break;
 
 			case 1:
 			case 2:
 				?>
-				<?php echo $link->levelSeparator; ?><a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
+				<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
 				<?php
 				break;
 		}
 	}
 	else
 	{
-		echo $link->levelSeparator . '<a href="' . $link->href . '">' . $link->text . '</a>';
+		echo '<a href="' . $link->href . '">' . $link->text . '</a>';
 	}
 
 	if (isset($list[$k + 1]->level) && ($link->level >= $list[$k + 1]->level))
