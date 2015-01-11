@@ -9,6 +9,9 @@
 	<authorUrl>http://norrnext.com</authorUrl>
 	<version>1.0.0</version>
 	<description>MOD_JMB_TREE_XML_DESCRIPTION</description>
+
+	<scriptfile>install.php</scriptfile>
+
 	<files>
 		<filename module="mod_jmb_tree">mod_jmb_tree.php</filename>
 		<folder>fields</folder>
@@ -16,10 +19,12 @@
 		<folder>tmpl</folder>
 		<filename>helper.php</filename>
 	</files>
+
 	<media destination="mod_jmb_tree" folder="media">
 		<folder>default</folder>
 		<folder>dark</folder>
 	</media>
+
 	<config>
 		<fields name="params">
 			<fieldset 
@@ -143,8 +148,8 @@
 				</field>
 
 			</fieldset>
-			<fieldset
-				name="advanced">
+
+			<fieldset name="advanced">
 
 				<field
 					name="show_backlink"
@@ -183,7 +188,8 @@
 				/>
 			</fieldset>
 
-			<fieldset name="jmb_tree_description"
+			<fieldset
+				name="jmb_tree_description"
 				addfieldpath="/modules/mod_jmb_tree/fields">
 
 				<field
@@ -195,6 +201,7 @@
 			</fieldset>
 		</fields>
 	</config>
+
 	<updateservers>
 		<server type="extension"
 				priority="1"

@@ -30,6 +30,7 @@
 				<include name="tmpl/**" />
 				<include name="helper.php" />
 				<include name="license.*" />
+				<include name="install.php" />
 				<include name="mod_${extension}.*" />
 			</fileset>
 		</zip>
@@ -48,6 +49,7 @@
 				<include name="tmpl/**" />
 				<include name="helper.php" />
 				<include name="license.*" />
+				<include name="install.php" />
 				<include name="mod_${extension}.*" />
 			</fileset>
 		</zip>
