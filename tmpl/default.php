@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 if ($params->get('include_css', 1))
 {
- JHtml::stylesheet('mod_jmb_tree/default/style.css', false, true);
+	JHtml::stylesheet('mod_jmb_tree/default/style.css', false, true);
 }
 
 $menuOpts   = array();
@@ -41,41 +41,49 @@ foreach ($list as $k => $link)
 	}
 
 	// Dropdown item class
-	$checkmenuitemlevel = !empty($list[$k + 1]->level) ? $list[$k + 1]->level : false;
-	if($link->level >= $checkmenuitemlevel){
-		$dropdown ="";
-		$area = 'role="menuitem"';
-	}	
-	else{
-		$dropdown =" jmb-tree-dropdown";
-		$area = 'role="menuitem" tabindex="0" aria-haspopup="true"';
+	$checkMenuItemLevel = !empty($list[$k + 1]->level) ? $list[$k + 1]->level : false;
+
+	if ($link->level >= $checkMenuItemLevel)
+	{
+		$dropdown = '';
+		$area     = 'role="menuitem"';
+	}
+	else
+	{
+		$dropdown = ' jmb-tree-dropdown';
+		$area     = 'role="menuitem" tabindex="0" aria-haspopup="true"';
 	}
 
 	if (isset($list[$k - 1]->level) && ($link->level > $list[$k - 1]->level))
-	{	
+	{
 		echo '<div class="jmb-tree-dropdown-menu"><ul role="menu" aria-hidden="true">';
 	}
-	if(isset($list[$k - 1]->level) && ($link->level >= 2)){
+
+	if (isset($list[$k - 1]->level) && ($link->level >= 2))
+	{
 		$area = 'role="menuitem" tabindex="-1"';
 	}
-	
+
 	// Parent item active class
 	$jMenu = JFactory::getApplication()->getMenu();
-	
-	$parentId 			= $jMenu->getActive()->parent_id;
-	$parentItem 		= $jMenu->getItem($parentId);
-	$parentItemId		= !empty($parentItem->id) ? $parentItem->id : false ;
-	$parrentItemId2		= !empty($parentItem->parent_id) ? $parentItem->parent_id : false;
 
-	if($parentItemId == $link->id || $parrentItemId2 == $link->id){
+	$parentId      = $jMenu->getActive()->parent_id;
+	$parentItem    = $jMenu->getItem($parentId);
+	$parentItemId  = !empty($parentItem->id) ? $parentItem->id : false;
+	$parentItemId2 = !empty($parentItem->parent_id) ? $parentItem->parent_id : false;
+
+	if ($parentItemId == $link->id || $parentItemId2 == $link->id)
+	{
 		$activePerent = ' active';
-	}else{
+	}
+	else
+	{
 		$activePerent = '';
 	}
 
 	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active' : '';
-	
-	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $dropdown .'' . $active . ''.$activePerent.'">';
+
+	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $dropdown . '' . $active . '' . $activePerent . '">';
 
 	if ($type == 'menu')
 	{
@@ -91,7 +99,8 @@ foreach ($list as $k => $link)
 			case 1:
 			case 2:
 				?>
-				<a <?php echo $class; ?>href="<?php echo $link->href; ?>" <?php echo $title; ?>target="_blank" <?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
+				<a <?php echo $class; ?>href="<?php echo $link->href; ?>"
+				   <?php echo $title; ?>target="_blank" <?php echo $link->nofollow; ?>><?php echo $linktype; ?></a>
 				<?php
 				break;
 		}
