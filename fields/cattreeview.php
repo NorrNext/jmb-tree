@@ -124,7 +124,7 @@ class JFormFieldcatTreeview extends JFormField
 
 		<script>
 			var zcatTree = new dhtmlXTreeObject("zcat_treeboxbox_tree", "100%", "100%", 'zcatdhtmlxTree'); // for script conversion
-			zcatTree.setImagePath("<?php echo JURI::root(); ?>modules/mod_jmb_tree/fields/treeImgs/");
+			zcatTree.setImagePath("<?php echo JUri::root(); ?>modules/mod_jmb_tree/fields/treeImgs/");
 			zcatTree.enableCheckBoxes(1);
 			zcatTree.enableThreeStateCheckboxes(true);
 			zcatTree.setOnCheckHandler(function (id, state) {

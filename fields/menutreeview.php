@@ -177,7 +177,7 @@ class JFormFieldmenuTreeview extends JFormField
 
 				document.getElementById('zmenu_treeboxbox_tree').innerHTML = '';
 				var zmenuTree = new dhtmlXTreeObject("zmenu_treeboxbox_tree", "100%", "100%", 'zmenudhtmlxTree' + value); // for script conversion
-				zmenuTree.setImagePath("<?php echo JURI::root(); ?>modules/mod_jmb_tree/fields/treeImgs/");
+				zmenuTree.setImagePath("<?php echo JUri::root(); ?>modules/mod_jmb_tree/fields/treeImgs/");
 				zmenuTree.enableCheckBoxes(1);
 				zmenuTree.enableThreeStateCheckboxes(true);
 				zmenuTree.setOnCheckHandler(function (id, state) {

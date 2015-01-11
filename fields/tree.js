@@ -206,7 +206,7 @@ function dhtmlXTreeObject(htmlObject, width, height, rootId) {
 	this.plusArray = new Array("plus2.gif", "plus3.gif", "plus4.gif", "plus.gif", "plus5.gif");
 	this.imageArray = new Array("leaf.gif", "folderOpen.gif", "folderClosed.gif");
 	this.cutImg = new Array(0, 0, 0);
-	this.cutImage = "but_cut.gif";
+	this.cutImage= "but_cut.gif";
 
 	this.dragger = new dhtmlDragAndDropObject();
 	this.htmlNode = new dhtmlXTreeItemObject(this.rootId, "", 0, this);
