@@ -103,10 +103,12 @@ abstract class ModJmbTreeHelper
 		$childrenOfCurMenu = false;
 
 		// Level separator
-		$levelSeparator = $params->get('level_sep', '');
+		$levelSeparator = '';
 
 		if ($params->get('use_sep', 1))
 		{
+			$levelSeparator = $params->get('level_sep', '');
+
 			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
 			{
 				$levelSeparator = '&nbsp;';
@@ -370,10 +372,12 @@ abstract class ModJmbTreeHelper
 		$level++;
 
 		// Level separator
-		$levelSeparator = $params->get('level_sep', '');
+		$levelSeparator = '';
 
 		if ($params->get('use_sep', 1))
 		{
+			$levelSeparator = $params->get('level_sep', '');
+
 			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
 			{
 				$levelSeparator = '&nbsp;';

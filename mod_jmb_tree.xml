@@ -112,6 +112,7 @@
 				<field
 					name="level_sep"
 					type="text"
+					class="input-mini"
 					size="1"
 					maxlength="1"
 					label="MOD_JMB_TREE_FIELD_LEVEL_SEPARATOR_LABEL"
