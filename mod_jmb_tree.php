@@ -14,4 +14,6 @@ require_once __DIR__ . '/helper.php';
 $list = ModJmbTreeHelper::getList($params);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
+$layout = $params->get('layout', 'default');
+
 require JModuleHelper::getLayoutPath('mod_jmb_tree', $params->get('layout', 'default'));

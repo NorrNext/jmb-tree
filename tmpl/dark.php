@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    Jmb_Tree
- * @author     Sherza & b2z <support@norrnext.com>
+ * @author     Artem Valchuk <support@norrnext.com>
  * @copyright  Copyright (C) 2012 - 2014 NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
  */
@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 if ($params->get('include_css', 1))
 {
-	JHtml::stylesheet('mod_jmb_tree/default/style.css', false, true);
+	JHtml::stylesheet('mod_jmb_tree/dark/style.css', false, true);
 }
 
 $menuOpts   = array();
@@ -18,7 +18,7 @@ $linkIdHref = array();
 $type       = $params->get('type', 'menu');
 $selVal     = ($type == 'menu') ? 'Itemid' : 'id';
 
-echo '<nav role="navigation" class="jmb-tree jmb-tree-default"><ul role="menubar" class="menu">';
+echo '<nav role="navigation" class="jmb-tree jmb-tree-dark"><ul role="menubar" class="menu">';
 
 foreach ($list as $k => $link)
 {

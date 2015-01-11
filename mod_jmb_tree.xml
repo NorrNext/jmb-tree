@@ -17,14 +17,26 @@
 		<filename>helper.php</filename>
 	</files>
 	<media destination="mod_jmb_tree" folder="media">
-		<folder>images</folder>
+		<folder>default</folder>
+		<folder>dark</folder>
 	</media>
 	<config>
 		<fields name="params">
 			<fieldset 
 				name="basic"
 				addfieldpath="/modules/mod_jmb_tree/fields">
-
+				
+				<field
+					name="include_css"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="MOD_JMB_TREE_FIELD_INCLUDE_CSS_LABEL"
+					description="MOD_JMB_TREE_FIELD_INCLUDE_CSS_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				
 				<field
 					name="type"
 					type="list"
