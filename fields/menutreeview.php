@@ -140,7 +140,7 @@ class JFormFieldmenuTreeview extends JFormField
 									$open    = ($level < 4) ? 1 : 0;
 									$checked = (in_array('zmenu' . $menuitem->value, $checkedElems)) ? 'checked="1"' : '';
 
-									$menutext = $menuitem->text;
+									$menutext = $menuitem->text . '&nbsp;&nbsp;(' . $menuitem->value . ')';
 
 									while (substr($menutext, 0, 2) == '- ')
 									{
