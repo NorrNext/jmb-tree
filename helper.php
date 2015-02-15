@@ -1,8 +1,8 @@
 <?php
 /**
  * @package    Jmb_Tree
- * @author     Sherza & b2z (Dmitrijs Rekuns) <support@norrnext.com>
- * @copyright  Copyright (C) 2012 - 2014 NorrNext. All rights reserved.
+ * @author     Sherza & Dmitry Rekun <support@norrnext.com>
+ * @copyright  Copyright (C) 2012 - 2015 NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
  */
 
@@ -102,6 +102,19 @@ abstract class ModJmbTreeHelper
 		$curMenuLevel = 0;
 		$childrenOfCurMenu = false;
 
+		// Level separator
+		$levelSeparator = '';
+
+		if ($params->get('use_sep', 1))
+		{
+			$levelSeparator = $params->get('level_sep', '');
+
+			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
+			{
+				$levelSeparator = '&nbsp;';
+			}
+		}
+
 		foreach ($items as $k => $mlink)
 		{
 			if (self::$childrenonly)
@@ -155,6 +168,9 @@ abstract class ModJmbTreeHelper
 					$link->id = $mlink->id;
 					$link->href = $mlink->link;
 
+					$internal = false;
+					$external = false;
+
 					switch ($mlink->type)
 					{
 						case 'separator':
@@ -166,6 +182,11 @@ abstract class ModJmbTreeHelper
 							{
 								// If this is an internal Joomla link, ensure the Itemid is set.
 								$link->href = $mlink->link . '&Itemid=' . $mlink->id;
+								$internal   = true;
+							}
+							else
+							{
+								$external = true;
 							}
 							break;
 
@@ -175,7 +196,8 @@ abstract class ModJmbTreeHelper
 							break;
 
 						default:
-							$router = JSite::getRouter();
+							$router = JFactory::getApplication()->getRouter();
+
 							if ($router->getMode() == JROUTER_MODE_SEF)
 							{
 								$link->href = 'index.php?Itemid=' . $mlink->id;
@@ -183,6 +205,7 @@ abstract class ModJmbTreeHelper
 							else
 							{
 								$link->href .= '&Itemid=' . $mlink->id;
+								$internal = true;
 							}
 							break;
 					}
@@ -193,7 +216,7 @@ abstract class ModJmbTreeHelper
 					}
 					else
 					{
-						$link->href = JRoute::_($link->href);
+						$link->href = JRoute::_($link->href, false);
 					}
 
 					$excludedParentsCount = 0;
@@ -211,22 +234,42 @@ abstract class ModJmbTreeHelper
 
 					$link->level = ($mlink->level - $excludedParentsCount - $curMenuLevel);
 
-					// Level separator.
 					$link->levelSeparator = '';
 
-					if ($params->get('use_sep', 1))
+					if ($link->level > 1)
 					{
-						$levelSeparator = $params->get('level_sep', '');
+						$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
+					}
 
-						if (strlen($levelSeparator) > 1 || empty($levelSeparator))
-						{
-							$levelSeparator = '&nbsp;';
-						}
+					// Nofollow
+					$addNofollow     = $params->get('add_nofollow', '');
+					$nofollowExclude = explode(',', $params->get('exclude_nofollow', ''));
+					$link->nofollow  = '';
 
-						if ($link->level > 1)
-						{
-							$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
-						}
+					switch ($addNofollow)
+					{
+						case 'all':
+							$link->nofollow = 'rel="nofollow"';
+							break;
+
+						case 'internal':
+							if ($internal)
+							{
+								$link->nofollow = 'rel="nofollow"';
+							}
+							break;
+
+						case 'external':
+							if ($external)
+							{
+								$link->nofollow = 'rel="nofollow"';
+							}
+							break;
+					}
+
+					if (in_array($link->id, $nofollowExclude))
+					{
+						$link->nofollow = '';
 					}
 
 					$link->text			= htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
@@ -237,37 +280,6 @@ abstract class ModJmbTreeHelper
 						: '';
 					$link->params		= $mlink->params;
 					$link->browserNav	= $mlink->browserNav;
-					$link->href			= JFilterOutput::ampReplace(htmlspecialchars($link->href));
-
-					// Nofollow.
-					$addNofollow = $params->get('add_nofollow', '');
-					$nofollowExclude = $params->get('exclude_nofollow', '');
-					$nofollowExclude = explode(',', $nofollowExclude);
-
-					switch ($addNofollow)
-					{
-						case 'all':
-							$link->nofollowInternal = 'rel="nofollow"';
-							$link->nofollowExternal = 'rel="nofollow"';
-							break;
-						case 'internal':
-							$link->nofollowInternal = 'rel="nofollow"';
-							$link->nofollowExternal = '';
-							break;
-						case 'external':
-							$link->nofollowInternal = '';
-							$link->nofollowExternal = 'rel="nofollow"';
-							break;
-						default:
-							$link->nofollowInternal = '';
-							$link->nofollowExternal = '';
-					}
-
-					if (in_array($link->id, $nofollowExclude))
-					{
-						$link->nofollowInternal = '';
-						$link->nofollowExternal = '';
-					}
 
 					$links[] = $link;
 				}
@@ -291,7 +303,7 @@ abstract class ModJmbTreeHelper
 	 */
 	private static function getCategories($params)
 	{
-		include_once(JPATH_BASE . '/components/com_content/helpers/route.php');
+		include_once JPATH_BASE . '/components/com_content/helpers/route.php';
 
 		$cat = '';
 		$cats = JCategories::getInstance('content', array($cat));
@@ -335,7 +347,7 @@ abstract class ModJmbTreeHelper
 			}
 		}
 
-		self::getCatListRecurse($categories, $level, $checkedElems, $links, $excludedCats);
+		self::getCatListRecurse($categories, $level, $checkedElems, $links, $excludedCats, $params);
 
 		return $links;
 	}
@@ -348,15 +360,29 @@ abstract class ModJmbTreeHelper
 	 * @param   array    $checkedElems        Checked elements.
 	 * @param   array    &$links              Links.
 	 * @param   array    $excludedCats        Excluded categories.
+	 * @param   array    $params              Additional parameters.
 	 * @param   boolean  $childrenOfSelected  Children categories of selected one.
 	 *
 	 * @return  void
 	 */
-	private static function getCatListRecurse($categories, &$level, $checkedElems, &$links, $excludedCats, $childrenOfSelected = false)
+	private static function getCatListRecurse($categories, &$level, $checkedElems, &$links, $excludedCats, $params, $childrenOfSelected = false)
 	{
 		$childrenOfSelectedTop = $childrenOfSelected;
 
 		$level++;
+
+		// Level separator
+		$levelSeparator = '';
+
+		if ($params->get('use_sep', 1))
+		{
+			$levelSeparator = $params->get('level_sep', '');
+
+			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
+			{
+				$levelSeparator = '&nbsp;';
+			}
+		}
 
 		foreach ($categories as $cat)
 		{
@@ -382,8 +408,16 @@ abstract class ModJmbTreeHelper
 					{
 						$link = new stdClass;
 						$link->id = $cat->id;
-						$link->href = JRoute::_(ContentHelperRoute::getCategoryRoute($cat->id));
-						$link->text = str_repeat('- ', $level) . $cat->title;
+						$link->href = JRoute::_(ContentHelperRoute::getCategoryRoute($cat->id), false);
+
+						$link->levelSeparator = '';
+
+						if ($level > 1)
+						{
+							$link->levelSeparator = str_repeat($levelSeparator . ' ', $level - 1);
+						}
+
+						$link->text = $cat->title;
 						$link->textNoDef = $cat->title;
 						$link->level = $level;
 						$links[] = $link;
@@ -402,7 +436,7 @@ abstract class ModJmbTreeHelper
 					$level--;
 				}
 
-				self::getCatListRecurse($childrenCategories, $level, $checkedElems, $links, $excludedCats, $childrenOfSelected);
+				self::getCatListRecurse($childrenCategories, $level, $checkedElems, $links, $excludedCats, $params, $childrenOfSelected);
 
 				if ($excluded)
 				{

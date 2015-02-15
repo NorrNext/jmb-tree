@@ -4,7 +4,7 @@
  * Modified by Sherza (sherza.web@gmail.com)
  *
  * @package    Jmb_Tree
- * @copyright  Copyright (C) 2012 - 2014 NorrNext. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2015 NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
  */
 
@@ -206,7 +206,7 @@ function dhtmlXTreeObject(htmlObject, width, height, rootId) {
 	this.plusArray = new Array("plus2.gif", "plus3.gif", "plus4.gif", "plus.gif", "plus5.gif");
 	this.imageArray = new Array("leaf.gif", "folderOpen.gif", "folderClosed.gif");
 	this.cutImg = new Array(0, 0, 0);
-	this.cutImage = "but_cut.gif";
+	this.cutImage= "but_cut.gif";
 
 	this.dragger = new dhtmlDragAndDropObject();
 	this.htmlNode = new dhtmlXTreeItemObject(this.rootId, "", 0, this);

@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.2" client="site" method="upgrade">
 	<name>mod_jmb_tree</name>
-	<author>SherZa and b2z (Dmitrijs Rekuns)</author>
-	<creationDate>July 2012</creationDate>
-	<copyright>(c) 2012 - 2014 NorrNext</copyright>
+	<author>SherZa and Dmitry Rekun</author>
+	<creationDate>2015-02-15</creationDate>
+	<copyright>(c) 2012 - 2015 NorrNext</copyright>
 	<license>GNU General Public License version 3 or later; see license.txt</license>
 	<authorEmail>support@norrnext.com</authorEmail>
-	<authorUrl>http://norrnext.com</authorUrl>
+	<authorUrl>http://www.norrnext.com</authorUrl>
 	<version>1.0.0</version>
 	<description>MOD_JMB_TREE_XML_DESCRIPTION</description>
+
+	<scriptfile>install.php</scriptfile>
+
 	<files>
 		<filename module="mod_jmb_tree">mod_jmb_tree.php</filename>
 		<folder>fields</folder>
+        <folder>language</folder>
 		<folder>tmpl</folder>
 		<filename>helper.php</filename>
 	</files>
+
 	<media destination="mod_jmb_tree" folder="media">
-		<folder>images</folder>
+		<folder>default</folder>
+		<folder>dark</folder>
 	</media>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.mod_jmb_tree.ini</language>
-		<language tag="en-GB">en-GB/en-GB.mod_jmb_tree.sys.ini</language>
-		<language tag="ru-RU">ru-RU/ru-RU.mod_jmb_tree.ini</language>
-		<language tag="ru-RU">ru-RU/ru-RU.mod_jmb_tree.sys.ini</language>
-	</languages>
+
 	<config>
 		<fields name="params">
 			<fieldset 
 				name="basic"
 				addfieldpath="/modules/mod_jmb_tree/fields">
-
+				
+				<field
+					name="include_css"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="MOD_JMB_TREE_FIELD_INCLUDE_CSS_LABEL"
+					description="MOD_JMB_TREE_FIELD_INCLUDE_CSS_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				
 				<field
 					name="type"
 					type="list"
-					default="category"
+					default="menu"
 					label="MOD_JMB_TREE_FIELD_TYPE_LABEL">
 					<option value="category">MOD_JMB_TREE_FIELD_TYPE_CATEGORY_OPTION</option>
 					<option value="menu">MOD_JMB_TREE_FIELD_TYPE_MENU_OPTION</option>
@@ -47,15 +59,15 @@
 				/>
 
 				<field
-					name="category"
-					type="cattreeview"
-					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
-				/>
-
-				<field
 					name="menuitems"
 					type="menutreeview"
 					label="MOD_JMB_TREE_FIELDSET_MENUITEMS_LABEL"
+				/>
+
+				<field
+					name="category"
+					type="cattreeview"
+					label="MOD_JMB_TREE_FIELDSET_CATEGORIES_LABEL"
 				/>
 
 				<field
@@ -105,17 +117,19 @@
 
 				<field
 					name="use_sep"
-					type="list"
+					type="radio"
+					class="btn-group btn-group-yesno"
 					default="1"
 					label="MOD_JMB_TREE_FIELD_USE_SEPARATOR_LABEL"
 					description="MOD_JMB_TREE_FIELD_USE_SEPARATOR_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 				<field
 					name="level_sep"
 					type="text"
+					class="input-mini"
 					size="1"
 					maxlength="1"
 					label="MOD_JMB_TREE_FIELD_LEVEL_SEPARATOR_LABEL"
@@ -124,26 +138,29 @@
 
 				<field
 					name="menu_img"
-					type="list"
+					type="radio"
+					class="btn-group btn-group-yesno"
 					default="1"
 					label="MOD_JMB_TREE_FIELD_USE_MENU_IMAGES_LABEL"
 					description="MOD_JMB_TREE_FIELD_USE_MENU_IMAGES_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>
-
-				<field
-					name="show_backlink"
-					type="list"
-					default="1"
-					label="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_LABEL">
 					<option value="0">JNO</option>
-					<option value="1">JYES</option>
 				</field>
 
 			</fieldset>
-			<fieldset
-				name="advanced">
+
+			<fieldset name="advanced">
+
+				<field
+					name="show_backlink"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_LABEL"
+					description="MOD_JMB_TREE_FIELD_SHOW_BACKLINK_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
 
 				<field
 					name="moduleclass_sfx"
@@ -170,12 +187,26 @@
 					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
 				/>
 			</fieldset>
+
+			<fieldset
+				name="jmb_tree_description"
+				addfieldpath="/modules/mod_jmb_tree/fields">
+
+				<field
+					name="description"
+					type="jmb.description"
+					label=""
+				/>
+
+			</fieldset>
 		</fields>
 	</config>
+
 	<updateservers>
-		<server type="extension"
-				priority="1"
-				name="jmb_tree">http://joomlablog.ru/updates/jmb/modules/jmb_tree.xml
+		<server
+			type="extension"
+			priority="1"
+			name="NorrNext updates server">http://www.norrnext.com/updates/joomla/modules/jmb_tree_update.xml
 		</server>
 	</updateservers>
 </extension>
