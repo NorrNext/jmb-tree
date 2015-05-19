@@ -6,8 +6,8 @@
 	<copyright>(c) 2012 - 2015 NorrNext</copyright>
 	<license>GNU General Public License version 3 or later; see license.txt</license>
 	<authorEmail>support@norrnext.com</authorEmail>
-	<authorUrl>http://www.norrnext.com</authorUrl>
-	<version>1.0.0</version>
+	<authorUrl>https://www.norrnext.com</authorUrl>
+	<version>1.0.1</version>
 	<description>MOD_JMB_TREE_XML_DESCRIPTION</description>
 
 	<scriptfile>install.php</scriptfile>
@@ -206,7 +206,7 @@
 		<server
 			type="extension"
 			priority="1"
-			name="NorrNext updates server">http://www.norrnext.com/updates/joomla/modules/jmb_tree_update.xml
+			name="NorrNext Update Site">https://www.norrnext.com/updates/joomla/modules/jmb_tree_update.xml
 		</server>
 	</updateservers>
 </extension>
