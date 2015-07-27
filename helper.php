@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * JMB Tree helper class.
  *
@@ -47,7 +49,7 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to get the list of items.
 	 *
-	 * @param   array  &$params  Additional parameters.
+	 * @param   Registry  &$params  Additional parameters.
 	 *
 	 * @return  array  The list of items.
 	 */
@@ -68,7 +70,7 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to get the list of menu items.
 	 *
-	 * @param   Joomla\Registry\Registry  $params  Additional parameters.
+	 * @param   Registry  $params  Additional parameters.
 	 *
 	 * @return  array  The list of items.
 	 */
@@ -311,7 +313,7 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to get the list of categories.
 	 *
-	 * @param   array  $params  Additional parameters.
+	 * @param   Registry  $params  Additional parameters.
 	 *
 	 * @return  array  The list of categories.
 	 */
@@ -355,13 +357,13 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to recurse the list of categories.
 	 *
-	 * @param   array    $categories          Categories.
-	 * @param   int      &$level              Hierarchy level.
-	 * @param   array    $checkedElems        Checked elements.
-	 * @param   array    &$links              Links.
-	 * @param   array    $excludedCats        Excluded categories.
-	 * @param   array    $params              Additional parameters.
-	 * @param   boolean  $childrenOfSelected  Children categories of selected one.
+	 * @param   array     $categories          Categories.
+	 * @param   int       &$level              Hierarchy level.
+	 * @param   array     $checkedElems        Checked elements.
+	 * @param   array     &$links              Links.
+	 * @param   array     $excludedCats        Excluded categories.
+	 * @param   Registry  $params              Additional parameters.
+	 * @param   boolean   $childrenOfSelected  Children categories of selected one.
 	 *
 	 * @return  void
 	 */
