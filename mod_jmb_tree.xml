@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="3.2" client="site" method="upgrade">
+<extension type="module" version="3.3" client="site" method="upgrade">
 	<name>mod_jmb_tree</name>
 	<author>Dmitry Rekun</author>
-	<creationDate>2015-02-15</creationDate>
+	<creationDate>27-07-2015</creationDate>
 	<copyright>(c) 2012 - 2015 NorrNext</copyright>
 	<license>GNU General Public License version 3 or later; see license.txt</license>
 	<authorEmail>support@norrnext.com</authorEmail>
 	<authorUrl>https://www.norrnext.com</authorUrl>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<description>MOD_JMB_TREE_XML_DESCRIPTION</description>
 
 	<scriptfile>install.php</scriptfile>
