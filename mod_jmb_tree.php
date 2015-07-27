@@ -11,6 +11,9 @@ defined('_JEXEC') or die;
 // Require helper.
 require_once __DIR__ . '/helper.php';
 
+$cache = JFactory::getCache('mod_jmb_tree', '');
+$cache->setCaching(false);
+
 $list = ModJmbTreeHelper::getList($params);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 

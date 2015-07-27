@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * JMB Tree helper class.
  *
@@ -47,7 +49,7 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to get the list of items.
 	 *
-	 * @param   array  &$params  Additional parameters.
+	 * @param   Registry  &$params  Additional parameters.
 	 *
 	 * @return  array  The list of items.
 	 */
@@ -68,7 +70,7 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to get the list of menu items.
 	 *
-	 * @param   array  $params  Additional parameters.
+	 * @param   Registry  $params  Additional parameters.
 	 *
 	 * @return  array  The list of items.
 	 */
@@ -87,208 +89,222 @@ abstract class ModJmbTreeHelper
 
 		$app = JFactory::getApplication();
 		$menu = $app->getMenu();
-		$items = $menu->getItems('menutype', $menutype);
 
-		$excludedMenus = array_map('trim', explode(',', $menuParams[3]));
+		// Get active menu item
+		$base = self::getActive();
+		$user = JFactory::getUser();
+		$levels = $user->getAuthorisedViewLevels();
+		asort($levels);
+		$key = 'menu_items' . $params . implode(',', $levels) . '.' . $base->id;
+		$cache = JFactory::getCache('mod_jmb_tree', '');
 
-		$links = array();
-		$excludedParentsLevels = array();
-
-		self::$childrenonly = $params->get('childrenonly');
-		$endLevel = $params->get('endLevel');
-		$endLevelReal = 0;
-
-		$curItemid = $app->input->getInt('Itemid', 0);
-		$curMenuLevel = 0;
-		$childrenOfCurMenu = false;
-
-		// Level separator
-		$levelSeparator = '';
-
-		if ($params->get('use_sep', 1))
+		if (!($links = $cache->get($key)))
 		{
-			$levelSeparator = $params->get('level_sep', '');
+			$items = $menu->getItems('menutype', $menutype);
 
-			if (strlen($levelSeparator) > 1 || empty($levelSeparator))
+			$excludedMenus = array_map('trim', explode(',', $menuParams[3]));
+
+			$links                 = array();
+			$excludedParentsLevels = array();
+
+			self::$childrenonly = $params->get('childrenonly');
+			$endLevel           = $params->get('endLevel');
+			$endLevelReal       = 0;
+
+			$curItemid         = $app->input->getInt('Itemid', 0);
+			$curMenuLevel      = 0;
+			$childrenOfCurMenu = false;
+
+			// Level separator
+			$levelSeparator = '';
+
+			if ($params->get('use_sep', 1))
 			{
-				$levelSeparator = '&nbsp;';
-			}
-		}
+				$levelSeparator = $params->get('level_sep', '');
 
-		foreach ($items as $k => $mlink)
-		{
-			if (self::$childrenonly)
-			{
-				if ($childrenOfCurMenu
-					&& $curMenuLevel
-					&& $mlink->level <= $curMenuLevel)
+				if (strlen($levelSeparator) > 1 || empty($levelSeparator))
 				{
-					$childrenOfCurMenu = false;
-					$curMenuLevel = 0;
-				}
-
-				if ($mlink->id == $curItemid)
-				{
-					$childrenOfCurMenu = true;
-					$curMenuLevel = $mlink->id;
-				}
-
-				if (!$childrenOfCurMenu || $mlink->id == $curItemid)
-				{
-					//continue;
+					$levelSeparator = '&nbsp;';
 				}
 			}
 
-			if (!empty($excludedParentsLevels)
-				&& isset($items[$k - 1])
-				&& ($items[$k - 1]->level >= $mlink->level))
+			foreach ($items as $k => $mlink)
 			{
-				foreach ($excludedParentsLevels as $j => $lev)
+				if (self::$childrenonly)
 				{
-					if ($j >= $mlink->level)
+					if ($childrenOfCurMenu
+						&& $curMenuLevel
+						&& $mlink->level <= $curMenuLevel)
 					{
-						unset($excludedParentsLevels[$j]);
+						$childrenOfCurMenu = false;
+						$curMenuLevel      = 0;
+					}
+
+					if ($mlink->id == $curItemid)
+					{
+						$childrenOfCurMenu = true;
+						$curMenuLevel      = $mlink->id;
+					}
+
+					if (!$childrenOfCurMenu || $mlink->id == $curItemid)
+					{
+						//continue;
 					}
 				}
-			}
 
-			$checked = (in_array('zmenu' . $mlink->id, $checkedElems)) ? true : false;
-			$excluded = (in_array($mlink->id, $excludedMenus)) ? true : false;
-
-			if ($checked && !$excluded)
-			{
-				if (!$endLevelReal)
+				if (!empty($excludedParentsLevels)
+					&& isset($items[$k - 1])
+					&& ($items[$k - 1]->level >= $mlink->level))
 				{
-					$endLevelReal = $mlink->level + $endLevel;
-				}
-
-				if (!$endLevel || $mlink->level < $endLevelReal)
-				{
-					$link = new stdClass;
-					$link->id = $mlink->id;
-					$link->href = $mlink->link;
-
-					$internal = false;
-					$external = false;
-
-					switch ($mlink->type)
+					foreach ($excludedParentsLevels as $j => $lev)
 					{
-						case 'separator':
-							$link->href = '';
-							break;
-
-						case 'url':
-							if ((strpos($mlink->link, 'index.php?') === 0) && (strpos($mlink->link, 'Itemid=') === false))
-							{
-								// If this is an internal Joomla link, ensure the Itemid is set.
-								$link->href = $mlink->link . '&Itemid=' . $mlink->id;
-								$internal   = true;
-							}
-							else
-							{
-								$external = true;
-							}
-							break;
-
-						case 'alias':
-							// If this is an alias use the item id stored in the parameters to make the link.
-							$link->href = 'index.php?Itemid=' . $mlink->params->get('aliasoptions');
-							break;
-
-						default:
-							$router = JFactory::getApplication()->getRouter();
-
-							if ($router->getMode() == JROUTER_MODE_SEF)
-							{
-								$link->href = 'index.php?Itemid=' . $mlink->id;
-							}
-							else
-							{
-								$link->href .= '&Itemid=' . $mlink->id;
-								$internal = true;
-							}
-							break;
-					}
-
-					if (strcasecmp(substr($link->href, 0, 4), 'http') && (strpos($link->href, 'index.php?') !== false))
-					{
-						$link->href = JRoute::_($link->href, false, $mlink->params->get('secure'));
-					}
-					else
-					{
-						$link->href = JRoute::_($link->href, false);
-					}
-
-					$excludedParentsCount = 0;
-
-					if (!empty($excludedParentsLevels))
-					{
-						foreach ($excludedParentsLevels as $j => $lev)
+						if ($j >= $mlink->level)
 						{
-							if ($j < $mlink->level)
-							{
-								$excludedParentsCount++;
-							}
+							unset($excludedParentsLevels[$j]);
 						}
 					}
+				}
 
-					$link->level = ($mlink->level - $excludedParentsCount - $curMenuLevel);
+				$checked  = (in_array('zmenu' . $mlink->id, $checkedElems)) ? true : false;
+				$excluded = (in_array($mlink->id, $excludedMenus)) ? true : false;
 
-					$link->levelSeparator = '';
-
-					if ($link->level > 1)
+				if ($checked && !$excluded)
+				{
+					if (!$endLevelReal)
 					{
-						$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
+						$endLevelReal = $mlink->level + $endLevel;
 					}
 
-					// Nofollow
-					$addNofollow     = $params->get('add_nofollow', '');
-					$nofollowExclude = explode(',', $params->get('exclude_nofollow', ''));
-					$link->nofollow  = '';
-
-					switch ($addNofollow)
+					if (!$endLevel || $mlink->level < $endLevelReal)
 					{
-						case 'all':
-							$link->nofollow = 'rel="nofollow"';
-							break;
+						$link       = new stdClass;
+						$link->id   = $mlink->id;
+						$link->href = $mlink->link;
 
-						case 'internal':
-							if ($internal)
+						$internal = false;
+						$external = false;
+
+						switch ($mlink->type)
+						{
+							case 'separator':
+								$link->href = '';
+								break;
+
+							case 'url':
+								if ((strpos($mlink->link, 'index.php?') === 0) && (strpos($mlink->link, 'Itemid=') === false))
+								{
+									// If this is an internal Joomla link, ensure the Itemid is set.
+									$link->href = $mlink->link . '&Itemid=' . $mlink->id;
+									$internal   = true;
+								}
+								else
+								{
+									$external = true;
+								}
+								break;
+
+							case 'alias':
+								// If this is an alias use the item id stored in the parameters to make the link.
+								$link->href = 'index.php?Itemid=' . $mlink->params->get('aliasoptions');
+								break;
+
+							default:
+								$router = JFactory::getApplication()->getRouter();
+
+								if ($router->getMode() == JROUTER_MODE_SEF)
+								{
+									$link->href = 'index.php?Itemid=' . $mlink->id;
+								}
+								else
+								{
+									$link->href .= '&Itemid=' . $mlink->id;
+									$internal = true;
+								}
+								break;
+						}
+
+						if (strcasecmp(substr($link->href, 0, 4), 'http') && (strpos($link->href, 'index.php?') !== false))
+						{
+							$link->href = JRoute::_($link->href, false, $mlink->params->get('secure'));
+						}
+						else
+						{
+							$link->href = JRoute::_($link->href, false);
+						}
+
+						$excludedParentsCount = 0;
+
+						if (!empty($excludedParentsLevels))
+						{
+							foreach ($excludedParentsLevels as $j => $lev)
 							{
-								$link->nofollow = 'rel="nofollow"';
+								if ($j < $mlink->level)
+								{
+									$excludedParentsCount++;
+								}
 							}
-							break;
+						}
 
-						case 'external':
-							if ($external)
-							{
+						$link->level = ($mlink->level - $excludedParentsCount - $curMenuLevel);
+
+						$link->levelSeparator = '';
+
+						if ($link->level > 1)
+						{
+							$link->levelSeparator = str_repeat($levelSeparator . ' ', $link->level - 1);
+						}
+
+						// Nofollow
+						$addNofollow     = $params->get('add_nofollow', '');
+						$nofollowExclude = explode(',', $params->get('exclude_nofollow', ''));
+						$link->nofollow  = '';
+
+						switch ($addNofollow)
+						{
+							case 'all':
 								$link->nofollow = 'rel="nofollow"';
-							}
-							break;
+								break;
+
+							case 'internal':
+								if ($internal)
+								{
+									$link->nofollow = 'rel="nofollow"';
+								}
+								break;
+
+							case 'external':
+								if ($external)
+								{
+									$link->nofollow = 'rel="nofollow"';
+								}
+								break;
+						}
+
+						if (in_array($link->id, $nofollowExclude))
+						{
+							$link->nofollow = '';
+						}
+
+						$link->text         = htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
+						$link->anchor_css   = htmlspecialchars($mlink->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
+						$link->anchor_title = htmlspecialchars($mlink->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
+						$link->menu_image   = $mlink->params->get('menu_image', '')
+							? htmlspecialchars($mlink->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false)
+							: '';
+						$link->params       = $mlink->params;
+						$link->browserNav   = $mlink->browserNav;
+
+						$links[] = $link;
 					}
+				}
 
-					if (in_array($link->id, $nofollowExclude))
-					{
-						$link->nofollow = '';
-					}
-
-					$link->text			= htmlspecialchars($mlink->title, ENT_COMPAT, 'UTF-8', false);
-					$link->anchor_css	= htmlspecialchars($mlink->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
-					$link->anchor_title = htmlspecialchars($mlink->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
-					$link->menu_image	= $mlink->params->get('menu_image', '')
-						? htmlspecialchars($mlink->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false)
-						: '';
-					$link->params		= $mlink->params;
-					$link->browserNav	= $mlink->browserNav;
-
-					$links[] = $link;
+				if ($excluded)
+				{
+					$excludedParentsLevels[$mlink->level] = true;
 				}
 			}
 
-			if ($excluded)
-			{
-				$excludedParentsLevels[$mlink->level] = true;
-			}
+			$cache->store($links, $key);
 		}
 
 		return $links;
@@ -297,7 +313,7 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to get the list of categories.
 	 *
-	 * @param   array  $params  Additional parameters.
+	 * @param   Registry  $params  Additional parameters.
 	 *
 	 * @return  array  The list of categories.
 	 */
@@ -305,14 +321,14 @@ abstract class ModJmbTreeHelper
 	{
 		include_once JPATH_BASE . '/components/com_content/helpers/route.php';
 
-		$cat = '';
-		$cats = JCategories::getInstance('content', array($cat));
-		$catRoot = $cats->get($cat);
+		$cat        = '';
+		$cats       = JCategories::getInstance('content', array($cat));
+		$catRoot    = $cats->get($cat);
 		$categories = $catRoot->getChildren();
-		$level = 0;
+		$level      = 0;
 
 		$catParamsPre = $params->get('category');
-		$catParams = array();
+		$catParams    = array();
 
 		foreach ($catParamsPre as $k => $cpp)
 		{
@@ -320,7 +336,7 @@ abstract class ModJmbTreeHelper
 		}
 
 		$checkedElems = explode(',', $catParams[1]);
-		$links = array();
+		$links        = array();
 
 		$excludedCats = array_map('trim', explode(',', $catParams[2]));
 
@@ -330,21 +346,7 @@ abstract class ModJmbTreeHelper
 
 		if (self::$childrenonly)
 		{
-			if (JFactory::getApplication()->input->getVar('option') == 'com_content')
-			{
-				$view = JFactory::getApplication()->input->getVar('view');
-
-				if ($view == 'category' || $view == 'categories')
-				{
-					self::$curcat = JFactory::getApplication()->input->getInt('id', 0);
-				}
-				elseif ($view == 'article')
-				{
-					$db = JFactory::getDbo();
-					$db->setQuery('SELECT catid FROM #__content WHERE id = ' . JFactory::getApplication()->input->getInt('id', 0));
-					self::$curcat = $db->loadResult();
-				}
-			}
+			self::$curcat = self::getCurrentCategory();
 		}
 
 		self::getCatListRecurse($categories, $level, $checkedElems, $links, $excludedCats, $params);
@@ -355,13 +357,13 @@ abstract class ModJmbTreeHelper
 	/**
 	 * Method to recurse the list of categories.
 	 *
-	 * @param   array    $categories          Categories.
-	 * @param   int      &$level              Hierarchy level.
-	 * @param   array    $checkedElems        Checked elements.
-	 * @param   array    &$links              Links.
-	 * @param   array    $excludedCats        Excluded categories.
-	 * @param   array    $params              Additional parameters.
-	 * @param   boolean  $childrenOfSelected  Children categories of selected one.
+	 * @param   array     $categories          Categories.
+	 * @param   int       &$level              Hierarchy level.
+	 * @param   array     $checkedElems        Checked elements.
+	 * @param   array     &$links              Links.
+	 * @param   array     $excludedCats        Excluded categories.
+	 * @param   Registry  $params              Additional parameters.
+	 * @param   boolean   $childrenOfSelected  Children categories of selected one.
 	 *
 	 * @return  void
 	 */
@@ -451,5 +453,61 @@ abstract class ModJmbTreeHelper
 		}
 
 		$level--;
+	}
+
+	/**
+	 * Get active menu item.
+	 *
+	 * @return  object
+	 *
+	 * @since   1.0
+	 */
+	private static function getActive()
+	{
+		$menu = JFactory::getApplication()->getMenu();
+		$lang = JFactory::getLanguage();
+
+		// Look for the home menu
+		if (JLanguageMultilang::isEnabled())
+		{
+			$home = $menu->getDefault($lang->getTag());
+		}
+		else
+		{
+			$home  = $menu->getDefault();
+		}
+
+		return $menu->getActive() ? $menu->getActive() : $home;
+	}
+
+	/**
+	 * Method to get current category
+	 *
+	 * @return  integer
+	 *
+	 * @since   1.0
+	 * @throws  Exception
+	 */
+	private static function getCurrentCategory()
+	{
+		$catId = 0;
+
+		if (JFactory::getApplication()->input->get('option') == 'com_content')
+		{
+			$view = JFactory::getApplication()->input->get('view');
+
+			if ($view == 'category' || $view == 'categories')
+			{
+				$catId = JFactory::getApplication()->input->get->getInt('id', 0);
+			}
+			elseif ($view == 'article')
+			{
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT catid FROM #__content WHERE id = ' . JFactory::getApplication()->input->get->getInt('id', 0));
+				$catId = $db->loadResult();
+			}
+		}
+
+		return $catId;
 	}
 }
