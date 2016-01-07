@@ -2,7 +2,7 @@
 /**
  * @package    Jmb_Tree
  * @author     Dmitry Rekun <support@norrnext.com>
- * @copyright  Copyright (C) 2011 - 2015 NorrNext. All rights reserved.
+ * @copyright  Copyright (C) 2012 - 2016 NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
  */
 
