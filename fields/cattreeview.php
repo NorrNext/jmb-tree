@@ -47,7 +47,7 @@ class JFormFieldcatTreeview extends JFormField
 			$open    = ($level < 4) ? 1 : 0;
 			$checked = (in_array('zcat' . $cat->id, $checkedElems)) ? 'checked="1"' : '';
 
-			echo '<div text="' . $cat->title . '" id="zcat' . $cat->id . '" im0="' . $img0 . '" im1="' . $img1 . '" im2="' . $img2 . '" open="' . $open . '" ' . $checked . '>';
+			echo '<div text="' . $cat->title . '&nbsp;&nbsp;(' . $cat->id . ') " id="zcat' . $cat->id . '" im0="' . $img0 . '" im1="' . $img1 . '" im2="' . $img2 . '" open="' . $open . '" ' . $checked . '>';
 
 			if ($childrenCategories)
 			{
