@@ -84,7 +84,11 @@ foreach ($list as $k => $link)
 	}
 
 	$active = (JFactory::getApplication()->input->getInt($selVal) == $link->id) ? ' active' : '';
-
+	// Active for alias
+	if (($link->id == $activeItem->id) || ($link->type == 'alias' && $link->params->get('aliasoptions') == $activeItem->id))
+	{
+		$active = ' active';
+	}
 	echo '<li ' . $area . ' class="jmb-tree-level' . $link->level . '' . $dropdown . '' . $active . '' . $activeParent . '">';
 
 	if ($type == 'menu')
