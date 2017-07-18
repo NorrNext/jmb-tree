@@ -292,6 +292,7 @@ abstract class ModJmbTreeHelper
 							? htmlspecialchars($mlink->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false)
 							: '';
 						$link->params       = $mlink->params;
+						$link->type       	= $mlink->type;
 						$link->browserNav   = $mlink->browserNav;
 
 						$links[] = $link;
