@@ -91,7 +91,7 @@ abstract class ModJmbTreeHelper
 		$menu = $app->getMenu();
 
 		// Get active menu item
-		$base = self::getActive();
+		$base = self::getActive($params);
 		$user = JFactory::getUser();
 		$levels = $user->getAuthorisedViewLevels();
 		asort($levels);
