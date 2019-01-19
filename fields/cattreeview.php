@@ -99,6 +99,8 @@ class JFormFieldcatTreeview extends JFormField
 
 		if (!isset($this->value[0]))
 		{
+			$this->value = array();
+
 			$this->value[0] = '';
 			$this->value[1] = '';
 		}

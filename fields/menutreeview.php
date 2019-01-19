@@ -81,6 +81,8 @@ class JFormFieldmenuTreeview extends JFormField
 
 		if (!isset($this->value[0]))
 		{
+			$this->value = array();
+
 			$this->value[0] = $firstMenutype;
 			$this->value[1] = '';
 			$this->value[2] = '';
