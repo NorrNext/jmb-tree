@@ -2,7 +2,10 @@ JMB Tree
 ========
 JMB Tree displays specified menu items or categories in tree-menu or drop-down list style. It’s a ‘must have’ module for portals, allowing website designers to organise menu items in the most effective way. For example you can choose city, region or city (as categories) and get content related to the selected category. It is also possible to combine menu items and select which ones need to be displayed. JMB Tree uses the core menu settings like class suffix and menu image.
 
-JMB Tree модуль позволяет выводить определенные категории или пункты меню.
+- Version: 1.0.1
+- Compatibility: Joomla 3.9.*
+
+**Русская версия:** JMB Tree модуль позволяет выводить определенные категории или пункты меню.
 
 
 Documentation
